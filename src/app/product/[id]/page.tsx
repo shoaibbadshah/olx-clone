@@ -75,7 +75,7 @@ const Page = () => {
         throw new Error("Failed to add product to cart");
       }
 
-      setProductsInCart([...productsInCart, product]); // Add the current product to the cart state
+      // setProductsInCart([...productsInCart, product]); // Add the current product to the cart state
       setLoading(false);
     } catch (error) {
       console.error("Error adding product to cart:", error);
@@ -90,18 +90,34 @@ const Page = () => {
   };
 
   const nextImage = () => {
-    const nextIndex = (currentIndex + 1) % (product?.images.length || 1);
-    setSelectedImage(product?.images[nextIndex]);
-    setCurrentIndex(nextIndex);
+    if (product && product.images) {
+      const nextIndex = (currentIndex + 1) % product.images.length;
+      setSelectedImage(product.images[nextIndex]);
+      setCurrentIndex(nextIndex);
+    }
   };
 
   const prevImage = () => {
-    const prevIndex =
-      (currentIndex - 1 + (product?.images.length || 1)) %
-      (product?.images.length || 1);
-    setSelectedImage(product?.images[prevIndex]);
-    setCurrentIndex(prevIndex);
+    if (product && product.images) {
+      const prevIndex =
+        (currentIndex - 1 + product.images.length) % product.images.length;
+      setSelectedImage(product.images[prevIndex]);
+      setCurrentIndex(prevIndex);
+    }
   };
+  // const nextImage = () => {
+  //   const nextIndex = (currentIndex + 1) % (product?.images.length || 1);
+  //   setSelectedImage(product?.images[nextIndex]);
+  //   setCurrentIndex(nextIndex);
+  // };
+
+  // const prevImage = () => {
+  //   const prevIndex =
+  //     (currentIndex - 1 + (product?.images.length || 1)) %
+  //     (product?.images.length || 1);
+  //   setSelectedImage(product?.images[prevIndex]);
+  //   setCurrentIndex(prevIndex);
+  // };
 
   const calculateDiscountedPrice = (
     price: number,
@@ -116,7 +132,7 @@ const Page = () => {
     return price.toString();
   };
 
-  const generateStarRating = (rating) => {
+  const generateStarRating = (rating: any) => {
     const numStars = parseInt(rating);
     const totalStars = 5;
 
@@ -169,8 +185,14 @@ const Page = () => {
     return <div className="flex">{stars}</div>;
   };
 
+  // const increaseQuantity = () => {
+  //   if (quantity < parseInt(product?.stock)) {
+  //     setQuantity(quantity + 1);
+  //   }
+  // };
+
   const increaseQuantity = () => {
-    if (quantity < parseInt(product.stock)) {
+    if (product && quantity < parseInt(product.stock)) {
       setQuantity(quantity + 1);
     }
   };

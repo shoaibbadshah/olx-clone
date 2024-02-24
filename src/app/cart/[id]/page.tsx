@@ -1,3 +1,4 @@
+//@ts-ignore
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -23,6 +24,7 @@ const Page = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState();
 
   const fetchProduct = async () => {
     try {
@@ -41,7 +43,7 @@ const Page = () => {
         setProduct(data);
 
         if (data && data.images.length > 0) {
-          setSelectedImage(data.images[0]);
+          // setSelectedImage(data?.images[0]);
         }
 
         setLoading(false);
@@ -73,7 +75,7 @@ const Page = () => {
         throw new Error("Failed to add product to cart");
       }
 
-      setProductsInCart([...productsInCart, product]); // Add the current product to the cart state
+      // setProductsInCart([...productsInCart, product]); // Add the current product to the cart state
       setLoading(false);
     } catch (error) {
       console.error("Error adding product to cart:", error);
@@ -81,11 +83,11 @@ const Page = () => {
     }
   };
 
-  const increaseQuantity = () => {
-    if (quantity < parseInt(product.stock)) {
-      setQuantity(quantity + 1);
-    }
-  };
+  // const increaseQuantity = () => {
+  //   if (quantity < parseInt(product.stock)) {
+  //     setQuantity(quantity + 1);
+  //   }
+  // };
 
   // Function to handle decreasing the quantity
   const decreaseQuantity = () => {
