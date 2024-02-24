@@ -1,4 +1,4 @@
-const { withForms } = require('@tailwindcss/forms');
+const { withForms } = require("@tailwindcss/forms");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -6,8 +6,8 @@ const nextConfig = {
 
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      config.resolve.alias['@heroicons/react'] = '@heroicons/react/outline';
-      config.resolve.alias['@heroicons/react/solid'] = '@heroicons/react/solid';
+      config.resolve.alias["@heroicons/react"] = "@heroicons/react/outline";
+      config.resolve.alias["@heroicons/react/solid"] = "@heroicons/react/solid";
     }
 
     return config;

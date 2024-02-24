@@ -17,7 +17,7 @@ type Product = {
   discountPercentage: string;
 };
 
-const page = () => {
+const Page = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -25,7 +25,6 @@ const page = () => {
   const [quantity, setQuantity] = useState(1);
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(false);
-
 
   const fetchProduct = async () => {
     try {
@@ -58,7 +57,6 @@ const page = () => {
   useEffect(() => {
     fetchProduct();
   }, [id]);
-
 
   const addToCart = async () => {
     try {
@@ -360,7 +358,7 @@ const page = () => {
                       In Stock
                     </span>
                     <p className="mt-2 text-sm text-blue-500 dark:text-blue-200">
-                        => &nbsp;
+                      &nbsp;
                       <span className="text-gray-600 dark:text-gray-400">
                         {product.description}
                       </span>
@@ -395,10 +393,11 @@ const page = () => {
                     <div className="mb-4 lg:mb-0">
                       <button
                         onClick={toggleLike}
-                        className={`flex items-center justify-center w-full h-10 p-2 mr-4 text-gray-700 border border-gray-300 lg:w-11 hover:text-gray-50 ${liked
-                          ? "dark:text-gray-100 dark:border-blue-600 bg-blue-600 border-blue-600 hover:bg-blue-500 dark:bg-blue-500 dark:hover:border-blue-500"
-                          : "dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 dark:hover:border-blue-500"
-                          }`}
+                        className={`flex items-center justify-center w-full h-10 p-2 mr-4 text-gray-700 border border-gray-300 lg:w-11 hover:text-gray-50 ${
+                          liked
+                            ? "dark:text-gray-100 dark:border-blue-600 bg-blue-600 border-blue-600 hover:bg-blue-500 dark:bg-blue-500 dark:hover:border-blue-500"
+                            : "dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 dark:hover:border-blue-500"
+                        }`}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -421,7 +420,7 @@ const page = () => {
                       </button>
                     ) : (
                       <Link
-                        href={'/cart'}
+                        href={"/cart"}
                         onClick={addToCart}
                         passHref
                         className="w-full px-4 py-3 text-center text-blue-600 bg-blue-100 border border-blue-600 dark:hover:bg-gray-900 dark:text-gray-400 dark:border-gray-700 dark:bg-gray-700 hover:bg-blue-600 hover:text-gray-100 lg:w-1/2 rounded-xl"
@@ -429,7 +428,6 @@ const page = () => {
                         Add to Cart
                       </Link>
                     )}
-
                   </div>
                   <div className="flex gap-4 mb-6">
                     <a
@@ -446,10 +444,12 @@ const page = () => {
         </section>
       ) : (
         <div className="flex items-center justify-center h-screen">
-
           <div className="flex gap-4 flex-wrap justify-center">
-            <img className="w-20 h-20 animate-spin" src="https://www.svgrepo.com/show/70469/loading.svg" alt="Loading icon" />
-
+            <img
+              className="w-20 h-20 animate-spin"
+              src="https://www.svgrepo.com/show/70469/loading.svg"
+              alt="Loading icon"
+            />
           </div>
         </div>
       )}
@@ -457,4 +457,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

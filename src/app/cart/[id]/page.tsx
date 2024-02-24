@@ -18,7 +18,7 @@ type Product = {
   discountPercentage: string;
 };
 
-const page = () => {
+const Page = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -250,4 +250,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

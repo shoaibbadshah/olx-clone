@@ -1,21 +1,18 @@
-// pages/api/products.ts
-import { NextApiRequest, NextApiResponse } from "next";
+// @ts-nocheck
 import mongoose from "mongoose";
+
 import { connectionStr } from "../../lib/db";
-import Product from "../../lib/models/Product";
+import Product from "@/app/product/page";
 
 mongoose.connect(connectionStr, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req, res) {
   if (req.method === "GET") {
     try {
-      const products: ProductInterface[] = await Product.find();
+      const products = await Product.find();
       res.status(200).json(products);
     } catch (error) {
       res.status(500).json({ error: "Error retrieving products" });
