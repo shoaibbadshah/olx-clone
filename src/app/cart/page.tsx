@@ -22,22 +22,11 @@ const CartPage = () => {
   const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
   const [loading, setLoading] = useState<boolean>(true);
 
-  // const increaseQuantity = (productId: number) => {
-  //   if (
-  //     quantities[productId] <
-  //     cartItems.find((item) => item.id === productId)?.stock
-  //   ) {
-  //     setQuantities((prevQuantities) => ({
-  //       ...prevQuantities,
-  //       [productId]: (prevQuantities[productId] || 0) + 1,
-  //     }));
-  //   }
-  // };
-
   const increaseQuantity = (productId: number) => {
-    const cartItem = cartItems.find((item) => item.id === productId);
-
-    if (cartItem && quantities[productId] < cartItem.stock) {
+    if (
+      quantities[productId] <
+      cartItems.find((item) => item.id === productId)?.stock
+    ) {
       setQuantities((prevQuantities) => ({
         ...prevQuantities,
         [productId]: (prevQuantities[productId] || 0) + 1,
@@ -185,7 +174,7 @@ const CartPage = () => {
               </div>
               <div className="hidden px-4 lg:block lg:w-2/12">
                 <p className="text-lg font-bold text-blue-500 dark:text-gray-400">
-                  {product.price.toString()}
+                  {product.price}
                 </p>
                 <b>
                   %
@@ -220,7 +209,7 @@ const CartPage = () => {
               <div className="w-auto px-4 text-right md:w-1/6 lg:w-1/12 ">
                 <p className="text-lg font-bold text-blue-500 dark:text-gray-400">
                   {calculateSubtotal(
-                    parseFloat(product.price.toString()),
+                    parseFloat(product.price),
                     product.discountPercentage,
                     product.id
                   )}
@@ -280,7 +269,7 @@ const CartPage = () => {
                     return (
                       acc +
                       calculateSubtotal(
-                        parseFloat(product.price.toString()),
+                        parseFloat(product.price),
                         product.discountPercentage,
                         product.id
                       )
@@ -307,7 +296,7 @@ const CartPage = () => {
                     return (
                       acc +
                       calculateSubtotal(
-                        parseFloat(product.price.toString()),
+                        parseFloat(product.price),
                         product.discountPercentage,
                         product.id
                       )

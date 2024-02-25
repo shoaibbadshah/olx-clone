@@ -1,12 +1,16 @@
-// lib/db.js
-import dotenv from "dotenv";
+import mongoose from "mongoose";
 
-dotenv.config();
+const connectDB = async () => {
+  if (mongoose.connections[0].readyState) return;
 
-if (!process.env.USERNAME || !process.env.PASSWORD) {
-  throw new Error("MongoDB credentials are not provided.");
-}
-
-const { USERNAME, PASSWORD } = process.env;
-// export const connectionStr = `mongodb+srv://${USERNAME}:${PASSWORD}@cluster0.skdksx7.mongodb.net/olxclone?retryWrites=true&w=majority`;
-export const connectionStr = `mongodb+srv://root:root@cluster0.p7wcehp.mongodb.net/`;
+  try {
+    mongoose.connect(process.env.MongoURL, {
+      useNewUrlParse: true,
+      useUnifiedTopology: true,
+    });
+    console.log("database connection established");
+  } catch (error) {
+    throw new Error("Error connecting to the database");
+  }
+};
+export default connectDB;

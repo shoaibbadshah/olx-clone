@@ -57,15 +57,14 @@ const productSchema = new Schema<ProductInterface>({
   },
 });
 
-const ProductModel = mongoose.models.products || mongoose.model<ProductInterface>("products", productSchema);
+const ProductModel =
+  mongoose.models.product ||
+  mongoose.model<ProductInterface>("product", productSchema);
 
 export default ProductModel;
 
-
-
 // // lib/models/Product.js
 // import mongoose, { Document, Schema } from "mongoose";
-
 
 // export interface ProductInterface extends Document {
 //   title: string;

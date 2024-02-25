@@ -1,25 +1,22 @@
-const { withForms } = require("@tailwindcss/forms");
+const formsPlugin = require('@tailwindcss/forms');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
-    ignoreBuildErrors: true,
-  },
+  // Other configurations...
 
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      config.resolve.alias["@heroicons/react"] = "@heroicons/react/outline";
-      config.resolve.alias["@heroicons/react/solid"] = "@heroicons/react/solid";
+      config.resolve.alias['@heroicons/react'] = '@heroicons/react/outline';
+      config.resolve.alias['@heroicons/react/solid'] = '@heroicons/react/solid';
     }
 
     return config;
   },
 
-  withPlugins: [withForms],
+  // Use the forms plugin directly
+  tailwind: {
+    ...formsPlugin,
+  },
 };
 
 module.exports = nextConfig;

@@ -10,7 +10,7 @@ const Data = [
 
     brand: "Apple",
     category: "smartphones",
-    thumbnail: "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
+    thumbnail:"https://cdn.dummyjson.com/product-images/6/thumbnail.png",
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const Data = [
 
     brand: "Apple",
     category: "smartphones",
-    thumbnail: "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+    thumbnail:"https://cdn.dummyjson.com/product-images/2/thumbnail.jpg",
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ const Data = [
 
     brand: "Samsung",
     category: "smartphones",
-    thumbnail: "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+    thumbnail: "https://cdn.dummyjson.com/product-images/7/thumbnail.jpg",
   },
   {
     id: 4,
@@ -42,7 +42,7 @@ const Data = [
 
     brand: "OPPO",
     category: "smartphones",
-    thumbnail: "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
+    thumbnail: "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
   },
 ];
 
