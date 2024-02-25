@@ -33,7 +33,7 @@ const page = () => {
 
       // Simulating a 2000 millisecond (2-second) delay before fetching data
       setTimeout(async () => {
-        const response = await fetch(`http://localhost:8080/products/${id}`);
+        const response = await fetch(`/api/product/${id}`);
 
         if (!response.ok) {
           throw new Error("Product not found");

@@ -163,7 +163,7 @@ const Product = () => {
       try {
         // Simulating delay of 2 seconds before fetching products
         setTimeout(async () => {
-          const response = await fetch("http://localhost:8080/products");
+          const response = await fetch("/api/product");
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
@@ -262,7 +262,10 @@ const Product = () => {
 
   return (
     <>
-      <Transition.Root show={mobileFiltersOpen} as={Fragment}>
+      <Transition.Root
+        show={mobileFiltersOpen}
+        as={Fragment}
+      >
         <Dialog
           as="div"
           className="relative z-40 lg:hidden"
@@ -299,7 +302,10 @@ const Product = () => {
                     onClick={() => setMobileFiltersOpen(false)}
                   >
                     <span className="sr-only">Close menu</span>
-                    <FaXmark className="h-6 w-6" aria-hidden="true" />
+                    <FaXmark
+                      className="h-6 w-6"
+                      aria-hidden="true"
+                    />
                   </button>
                 </div>
 
@@ -334,7 +340,10 @@ const Product = () => {
                           </h3>
                           {filter.id === "Brand" && (
                             <Disclosure.Panel className="pt-6">
-                              <div className="space-y-6" key={filter.id}>
+                              <div
+                                className="space-y-6"
+                                key={filter.id}
+                              >
                                 {filter.options.map((option) => (
                                   <div
                                     key={option.value}
@@ -364,7 +373,10 @@ const Product = () => {
                           )}
                           {filter.id === "category" && (
                             <Disclosure.Panel className="pt-6">
-                              <div className="space-y-6" key={filter.id}>
+                              <div
+                                className="space-y-6"
+                                key={filter.id}
+                              >
                                 {filter.options.map((option) => (
                                   <div
                                     key={option.value}
@@ -412,7 +424,10 @@ const Product = () => {
           </h1>
 
           <div className="flex items-center">
-            <Menu as="div" className="relative inline-block text-left">
+            <Menu
+              as="div"
+              className="relative inline-block text-left"
+            >
               <div>
                 <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
                   Sort
@@ -489,19 +504,31 @@ const Product = () => {
               onClick={() => setMobileFiltersOpen(true)}
             >
               <span className="sr-only">Filters</span>
-              <BsFilter className="h-5 w-5" aria-hidden="true" />
+              <BsFilter
+                className="h-5 w-5"
+                aria-hidden="true"
+              />
             </button>
           </div>
         </div>
 
-        <section aria-labelledby="products-heading" className="pb-24 pt-6">
-          <h2 id="products-heading" className="sr-only">
+        <section
+          aria-labelledby="products-heading"
+          className="pb-24 pt-6"
+        >
+          <h2
+            id="products-heading"
+            className="sr-only"
+          >
             Products
           </h2>
 
           <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
             <form className="mt-4 border-gray-200">
-              <a href="" className="py-3 text-blue-700 text-bold">
+              <a
+                href=""
+                className="py-3 text-blue-700 text-bold"
+              >
                 All Product
               </a>
               <form className="my-6">
@@ -561,16 +588,25 @@ const Product = () => {
                           </span>
                           <span className="ml-6 flex items-center">
                             {open ? (
-                              <BsDash className="h-5 w-5" aria-hidden="true" />
+                              <BsDash
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
                             ) : (
-                              <BsPlus className="h-5 w-5" aria-hidden="true" />
+                              <BsPlus
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
                             )}
                           </span>
                         </Disclosure.Button>
                       </h3>
                       {filter.id === "Brand" && (
                         <Disclosure.Panel className="pt-6">
-                          <div className="space-y-6" key={filter.id}>
+                          <div
+                            className="space-y-6"
+                            key={filter.id}
+                          >
                             {filter.options.map((option) => (
                               <div
                                 key={option.value}
@@ -600,7 +636,10 @@ const Product = () => {
                       )}
                       {filter.id === "category" && (
                         <Disclosure.Panel className="pt-6">
-                          <div className="space-y-6" key={filter.id}>
+                          <div
+                            className="space-y-6"
+                            key={filter.id}
+                          >
                             {filter.options.map((option) => (
                               <div
                                 key={option.value}
@@ -661,7 +700,10 @@ const Product = () => {
                         currentPage * productsPerPage
                       )
                       .map((product) => (
-                        <Link href={`/product/${product.id}`} key={product.id}>
+                        <Link
+                          href={`/product/${product.id}`}
+                          key={product.id}
+                        >
                           <div
                             className={
                               isListView
@@ -715,7 +757,6 @@ const Product = () => {
                                   <p className="mt-2 text-base leading-6 text-gray-500">
                                     {product.description.substring(0, 42)}
                                   </p>
-                                 
                                 </div>
                               </Fragment>
                             )}
@@ -749,7 +790,10 @@ const Product = () => {
                     }`}
                   >
                     <span className="sr-only">Previous</span>
-                    <FaChevronLeft className="h-5 w-5" aria-hidden="true" />
+                    <FaChevronLeft
+                      className="h-5 w-5"
+                      aria-hidden="true"
+                    />
                   </button>
                   {Array.from({
                     length: numberOfPages > 99999 ? 99999 : numberOfPages,
@@ -774,7 +818,10 @@ const Product = () => {
                     }`}
                   >
                     <span className="sr-only">Next</span>
-                    <FaChevronRight className="h-5 w-5" aria-hidden="true" />
+                    <FaChevronRight
+                      className="h-5 w-5"
+                      aria-hidden="true"
+                    />
                   </button>
                 </nav>
               </div>
@@ -787,7 +834,10 @@ const Product = () => {
                   currentPage === 1 ? "hidden" : "block"
                 }`}
               >
-                <FaChevronLeft className="h-5 w-5" aria-hidden="true" />
+                <FaChevronLeft
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                />
                 <span className="sr-only">Previous</span>
               </button>
               <button
@@ -798,7 +848,10 @@ const Product = () => {
                 }`}
               >
                 <span className="sr-only">Next</span>
-                <FaChevronRight className="h-5 w-5" aria-hidden="true" />
+                <FaChevronRight
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                />
               </button>
             </div>
           </div>
