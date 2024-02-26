@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // const Data = [
 //   {
@@ -48,19 +48,22 @@ import { useEffect } from "react";
 // ];
 
 const Testimonial = () => {
+  const [data, setData] = useState();
   useEffect(() => {
     const useFetch = async () => {
       const res = await fetch("/api/product");
 
-      const data = await res.json();
-      console.log("🚀 ~ file: Card.tsx:56 ~ useFetch ~ res:", data);
+      const product = await res.json();
+      console.log("🚀 ~ file: Card.tsx:56 ~ useFetch ~ res:", product);
+
+      setData(product?.product);
     };
 
     useFetch();
   }, []);
   return (
     <div className="grid m-20 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-      {/* {Data.map((item) => (
+      {data?.map((item) => (
         <div
           key={item.id}
           className="mt-56 bg-white rounded-xl shadow dark:bg-gray-700 transition duration-500 hover:shadow-2xl"
@@ -119,7 +122,7 @@ const Testimonial = () => {
             </Link>
           </div>
         </div>
-      ))} */}
+      ))}
     </div>
   );
 };
