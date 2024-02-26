@@ -6,7 +6,7 @@ export const GET = async () => {
   try {
     await connectDB();
     const product = await ProductModel.find();
-    console.log("Products fetched successfully");
+    console.log("Products fetched successfully", product);
 
     return NextResponse.json({
       status: 200,
