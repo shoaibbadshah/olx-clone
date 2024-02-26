@@ -1,39 +1,59 @@
-// // @ts-nocheck
-// import type { NextApiRequest, NextApiResponse } from "next";
-// import mongoose from "mongoose";
-// import Product from "@/schema/schema";
-// import connectDB from "@/lib/db";
+import connectDB from "@/lib/db";
+import ProductModel from "@/schema/schema";
+import { NextResponse } from "next/server";
 
-// export default async function handler(
-//   req: NextApiRequest,
-//   res: NextApiResponse
-// ) {
-//   // Disable type-checking for the following block
-//   // @ts-ignore
-//   await connectDB();
+export const GET = async () => {
+  try {
+    await connectDB();
+    const product = await ProductModel.find();
+    console.log("Products fetched successfully");
 
-//   switch (req.method) {
-//     case "GET":
-//       try {
-//         const product = await Product.find();
-//         res.status(200).json(product);
-//         console.log("Products fetched successfully");
-//       } catch (error) {
-//         console.error("Error retrieving products:", error);
-//         res.status(500).json({ error: "Error retrieving products" });
-//       }
-//       break;
-//     case "POST":
-//       // Handle logic for POST request (if needed)
-//       break;
-//     case "PUT":
-//       // Handle logic for PUT request (if needed)
-//       break;
-//     case "DELETE":
-//       // Handle logic for DELETE request (if needed)
-//       break;
-//     default:
-//       res.status(405).json({ error: "Method Not Allowed" });
-//       break;
-//   }
-// }
+    return NextResponse.json({
+      status: 200,
+      product,
+    });
+  } catch (error) {
+    console.error("Error retrieving products:", error);
+    return NextResponse.json({
+      status: 501,
+      error: "Error retrieving products" + error,
+    });
+  }
+};
+
+export const POST = async (request: Request) => {
+  const body = await request.json();
+  console.log("🚀 ~ file: route.ts:26 ~ POST ~ body:", body);
+  const {
+    title,
+    description,
+    price,
+    discountPercentage,
+    brand,
+    category,
+    thumbnail,
+    images,
+  } = body;
+
+  try {
+    await connectDB();
+    const newProduct = new ProductModel({
+      title,
+      description,
+      price,
+      discountPercentage,
+      brand,
+      category,
+      thumbnail,
+      images,
+    });
+
+    await newProduct.save();
+    return NextResponse.json({
+      success: true,
+      message: "Product uploaded successfully",
+    });
+  } catch (error) {
+    return NextResponse.json({ error: "Error uploading product" + error });
+  }
+};
