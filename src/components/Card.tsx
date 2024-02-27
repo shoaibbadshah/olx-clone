@@ -49,17 +49,17 @@ import { useEffect, useState } from "react";
 
 const Testimonial = () => {
   const [data, setData] = useState();
+
+  const getProduct = async () => {
+    const res = await fetch("https://olx-clone-alpha.vercel.app/api/product");
+
+    const product = await res.json();
+    console.log("🚀 ~ file: Card.tsx:56 ~ useFetch ~ res:", product);
+
+    setData(product?.product);
+  };
   useEffect(() => {
-    const useFetch = async () => {
-      const res = await fetch("https://olx-clone-alpha.vercel.app/api/product");
-
-      const product = await res.json();
-      console.log("🚀 ~ file: Card.tsx:56 ~ useFetch ~ res:", product);
-
-      setData(product?.product);
-    };
-
-    useFetch();
+    getProduct();
   }, []);
   return (
     <div className="grid m-20 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">

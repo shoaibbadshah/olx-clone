@@ -56,7 +56,7 @@ const Page = () => {
 
   useEffect(() => {
     fetchProduct();
-  }, [id]);
+  }, [id, fetchProduct]);
 
   const addToCart = async () => {
     try {
