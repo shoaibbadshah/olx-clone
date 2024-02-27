@@ -51,7 +51,7 @@ const Testimonial = () => {
   const [data, setData] = useState();
   useEffect(() => {
     const useFetch = async () => {
-      const res = await fetch("/api/product");
+      const res = await fetch("https://olx-clone-alpha.vercel.app/api/product");
 
       const product = await res.json();
       console.log("🚀 ~ file: Card.tsx:56 ~ useFetch ~ res:", product);

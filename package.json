@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "start-server": "json-server --watch data.json --port 8080",
+    "server": "json-server --watch data.json --port 8080",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
