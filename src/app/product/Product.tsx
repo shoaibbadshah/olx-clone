@@ -12,141 +12,9 @@ import {
   BsListNested,
 } from "react-icons/bs";
 import Link from "next/link";
+import { filters, sortOptions, classNames } from "./page";
 
-type Product = {
-  id: string;
-  thumbnail: string;
-  title: string;
-  price: number;
-  brand: string;
-  category: string;
-  description: string;
-};
-
-const filters = [
-  {
-    id: "Brand",
-    name: "Brand",
-    options: [
-      {
-        value: "Apple",
-        label: "Apple",
-        checked: false,
-      },
-      {
-        value: "Samsung",
-        label: "Samsung",
-        checked: false,
-      },
-      {
-        value: "OPPO",
-        label: "OPPO",
-        checked: false,
-      },
-      {
-        value: "Huawei",
-        label: "Huawei",
-        checked: false,
-      },
-
-      {
-        value: "Infinix",
-        label: "Infinix",
-        checked: false,
-      },
-
-      {
-        value: "Watch Pearls",
-        label: "Watch Pearls",
-        checked: false,
-      },
-      {
-        value: "Bracelet",
-        label: "Bracelet",
-        checked: false,
-      },
-      {
-        value: "Car Aux",
-        label: "Car Aux",
-        checked: false,
-      },
-      {
-        value: "LED Lights",
-        label: "LED Lights",
-        checked: false,
-      },
-
-      {
-        value: "Golden",
-        label: "Golden",
-        checked: false,
-      },
-    ],
-  },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      {
-        value: "smartphones",
-        label: "smartphones",
-        checked: false,
-      },
-      {
-        value: "laptops",
-        label: "laptops",
-        checked: false,
-      },
-      {
-        value: "fragrances",
-        label: "fragrances",
-        checked: false,
-      },
-      {
-        value: "skincare",
-        label: "skincare",
-        checked: false,
-      },
-      {
-        value: "groceries",
-        label: "groceries",
-        checked: false,
-      },
-      {
-        value: "home-decoration",
-        label: "home decoration",
-        checked: false,
-      },
-      {
-        value: "furniture",
-        label: "furniture",
-        checked: false,
-      },
-      {
-        value: "tops",
-        label: "tops",
-        checked: false,
-      },
-
-      {
-        value: "lighting",
-        label: "lighting",
-        checked: false,
-      },
-    ],
-  },
-];
-const sortOptions = [
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
-
-const Product = () => {
+export const Product = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
@@ -163,7 +31,7 @@ const Product = () => {
       try {
         // Simulating delay of 2 seconds before fetching products
         setTimeout(async () => {
-          const response = await fetch("/api/product");
+          const response = await fetch("http://localhost:8080/products");
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
@@ -865,5 +733,3 @@ const Product = () => {
     </>
   );
 };
-
-export default Product;

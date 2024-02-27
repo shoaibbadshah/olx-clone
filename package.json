@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.29.8",
     "@formkit/auto-animate": "^0.8.1",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^1.0.6",
