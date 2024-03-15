@@ -163,7 +163,7 @@ const Product = () => {
       try {
         // Simulating delay of 2 seconds before fetching products
         setTimeout(async () => {
-          const response = await fetch("/api/product");
+          const response = await fetch("http://localhost:8080/products");
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
