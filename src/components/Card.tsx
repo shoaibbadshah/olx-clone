@@ -1,60 +1,73 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const Data = [
-  {
-    id: 1,
-    title: "iPhone 9",
-    description: "An apple mobile which is nothing like apple",
-    price: 993,
+// const Data = [
+//   {
+//     id: 1,
+//     title: "iPhone 9",
+//     description: "An apple mobile which is nothing like apple",
+//     price: 993,
 
-    brand: "Apple",
-    category: "smartphones",
-    thumbnail: "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
-  },
-  {
-    id: 2,
-    title: "iPhone X",
-    description:
-      "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
-    price: 1111,
+//     brand: "Apple",
+//     category: "smartphones",
+//     thumbnail: "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
+//   },
+//   {
+//     id: 2,
+//     title: "iPhone X",
+//     description:
+//       "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
+//     price: 1111,
 
-    brand: "Apple",
-    category: "smartphones",
-    thumbnail: "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
-  },
-  {
-    id: 3,
-    title: "Samsung Universe 9",
-    description:
-      "Samsung's new variant which goes beyond Galaxy to the Universe",
-    price: 1249,
+//     brand: "Apple",
+//     category: "smartphones",
+//     thumbnail: "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
+//   },
+//   {
+//     id: 3,
+//     title: "Samsung Universe 9",
+//     description:
+//       "Samsung's new variant which goes beyond Galaxy to the Universe",
+//     price: 1249,
 
-    brand: "Samsung",
-    category: "smartphones",
-    thumbnail: "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
-  },
-  {
-    id: 4,
-    title: "OPPOF19",
-    description: "OPPO F19 is officially announced on April 2021.",
-    price: 300,
+//     brand: "Samsung",
+//     category: "smartphones",
+//     thumbnail: "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
+//   },
+//   {
+//     id: 4,
+//     title: "OPPOF19",
+//     description: "OPPO F19 is officially announced on April 2021.",
+//     price: 300,
 
-    brand: "OPPO",
-    category: "smartphones",
-    thumbnail: "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
-  },
-];
+//     brand: "OPPO",
+//     category: "smartphones",
+//     thumbnail: "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
+//   },
+// ];
 
 const Testimonial = () => {
+  const [data, setData] = useState();
+
+  const getProduct = async () => {
+    const res = await fetch("https://olx-clone-alpha.vercel.app/api/product");
+
+    const product = await res.json();
+    console.log("🚀 ~ file: Card.tsx:56 ~ useFetch ~ res:", product);
+
+    setData(product?.product);
+  };
+  useEffect(() => {
+    getProduct();
+  }, []);
   return (
     <div className="grid m-20 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-      {Data.map((item) => (
+      {data?.map((item) => (
         <div
           key={item.id}
           className="mt-56 bg-white rounded-xl shadow dark:bg-gray-700 transition duration-500 hover:shadow-2xl"
         >
-         
           <div className="relative z-20 pb-4 group">
             <Link href="/product">
               <div className="relative block h-64 mb-4 -mt-56 overflow-hidden rounded -top-full ">

@@ -1,15 +1,17 @@
+// lib/db.js
+import dotenv from "dotenv";
 import mongoose from "mongoose";
+dotenv.config();
 
 const connectDB = async () => {
-  if (mongoose.connections[0].readyState) return;
+  // if (mongoose.connections[0].readyState) return;
   try {
     mongoose.connect(process.env.MongoURL, {
-      useNewUrlParser: true,
-      userUnifiedTopology: true,
+      useUnifiedTopology: true,
     });
-    console.log("Connected to MongoDB");
+    console.log("database connection established");
   } catch (error) {
-    throw new error("database connection error: " + error);
+    throw new Error("Error connecting to the database");
   }
 };
 export default connectDB;

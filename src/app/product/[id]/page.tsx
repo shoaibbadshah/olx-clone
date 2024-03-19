@@ -26,7 +26,6 @@ const Page = () => {
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(false);
 
-
   const fetchProduct = async () => {
     try {
       setLoading(true);
@@ -59,7 +58,6 @@ const Page = () => {
     fetchProduct();
   }, [id]);
 
-
   const addToCart = async () => {
     try {
       setLoading(true);
@@ -77,7 +75,7 @@ const Page = () => {
         throw new Error("Failed to add product to cart");
       }
 
-      setProductsInCart([...productsInCart, product]); // Add the current product to the cart state
+      // setProductsInCart([...productsInCart, product]); // Add the current product to the cart state
       setLoading(false);
     } catch (error) {
       console.error("Error adding product to cart:", error);
@@ -92,18 +90,34 @@ const Page = () => {
   };
 
   const nextImage = () => {
-    const nextIndex = (currentIndex + 1) % (product?.images.length || 1);
-    setSelectedImage(product?.images[nextIndex]);
-    setCurrentIndex(nextIndex);
+    if (product && product.images) {
+      const nextIndex = (currentIndex + 1) % product.images.length;
+      setSelectedImage(product.images[nextIndex]);
+      setCurrentIndex(nextIndex);
+    }
   };
 
   const prevImage = () => {
-    const prevIndex =
-      (currentIndex - 1 + (product?.images.length || 1)) %
-      (product?.images.length || 1);
-    setSelectedImage(product?.images[prevIndex]);
-    setCurrentIndex(prevIndex);
+    if (product && product.images) {
+      const prevIndex =
+        (currentIndex - 1 + product.images.length) % product.images.length;
+      setSelectedImage(product.images[prevIndex]);
+      setCurrentIndex(prevIndex);
+    }
   };
+  // const nextImage = () => {
+  //   const nextIndex = (currentIndex + 1) % (product?.images.length || 1);
+  //   setSelectedImage(product?.images[nextIndex]);
+  //   setCurrentIndex(nextIndex);
+  // };
+
+  // const prevImage = () => {
+  //   const prevIndex =
+  //     (currentIndex - 1 + (product?.images.length || 1)) %
+  //     (product?.images.length || 1);
+  //   setSelectedImage(product?.images[prevIndex]);
+  //   setCurrentIndex(prevIndex);
+  // };
 
   const calculateDiscountedPrice = (
     price: number,
@@ -118,7 +132,7 @@ const Page = () => {
     return price.toString();
   };
 
-  const generateStarRating = (rating) => {
+  const generateStarRating = (rating: any) => {
     const numStars = parseInt(rating);
     const totalStars = 5;
 
@@ -171,8 +185,14 @@ const Page = () => {
     return <div className="flex">{stars}</div>;
   };
 
+  // const increaseQuantity = () => {
+  //   if (quantity < parseInt(product?.stock)) {
+  //     setQuantity(quantity + 1);
+  //   }
+  // };
+
   const increaseQuantity = () => {
-    if (quantity < parseInt(product.stock)) {
+    if (product && quantity < parseInt(product.stock)) {
       setQuantity(quantity + 1);
     }
   };
@@ -360,7 +380,7 @@ const Page = () => {
                       In Stock
                     </span>
                     <p className="mt-2 text-sm text-blue-500 dark:text-blue-200">
-                        => &nbsp;
+                      &nbsp;
                       <span className="text-gray-600 dark:text-gray-400">
                         {product.description}
                       </span>
@@ -395,10 +415,11 @@ const Page = () => {
                     <div className="mb-4 lg:mb-0">
                       <button
                         onClick={toggleLike}
-                        className={`flex items-center justify-center w-full h-10 p-2 mr-4 text-gray-700 border border-gray-300 lg:w-11 hover:text-gray-50 ${liked
-                          ? "dark:text-gray-100 dark:border-blue-600 bg-blue-600 border-blue-600 hover:bg-blue-500 dark:bg-blue-500 dark:hover:border-blue-500"
-                          : "dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 dark:hover:border-blue-500"
-                          }`}
+                        className={`flex items-center justify-center w-full h-10 p-2 mr-4 text-gray-700 border border-gray-300 lg:w-11 hover:text-gray-50 ${
+                          liked
+                            ? "dark:text-gray-100 dark:border-blue-600 bg-blue-600 border-blue-600 hover:bg-blue-500 dark:bg-blue-500 dark:hover:border-blue-500"
+                            : "dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500 dark:hover:border-blue-500"
+                        }`}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -421,7 +442,7 @@ const Page = () => {
                       </button>
                     ) : (
                       <Link
-                        href={'/cart'}
+                        href={"/cart"}
                         onClick={addToCart}
                         passHref
                         className="w-full px-4 py-3 text-center text-blue-600 bg-blue-100 border border-blue-600 dark:hover:bg-gray-900 dark:text-gray-400 dark:border-gray-700 dark:bg-gray-700 hover:bg-blue-600 hover:text-gray-100 lg:w-1/2 rounded-xl"
@@ -429,7 +450,6 @@ const Page = () => {
                         Add to Cart
                       </Link>
                     )}
-
                   </div>
                   <div className="flex gap-4 mb-6">
                     <a
@@ -446,10 +466,12 @@ const Page = () => {
         </section>
       ) : (
         <div className="flex items-center justify-center h-screen">
-
           <div className="flex gap-4 flex-wrap justify-center">
-            <img className="w-20 h-20 animate-spin" src="https://www.svgrepo.com/show/70469/loading.svg" alt="Loading icon" />
-
+            <img
+              className="w-20 h-20 animate-spin"
+              src="https://www.svgrepo.com/show/70469/loading.svg"
+              alt="Loading icon"
+            />
           </div>
         </div>
       )}
