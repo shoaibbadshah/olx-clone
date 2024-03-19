@@ -12,7 +12,7 @@ import {
   BsListNested,
 } from "react-icons/bs";
 import Link from "next/link";
-import { filters, sortOptions, classNames } from "./page";
+import { filters, sortOptions, classNames } from "./Page";
 
 export const Product = () => {
   const [products, setProducts] = useState([]);
