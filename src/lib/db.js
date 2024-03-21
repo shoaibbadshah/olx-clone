@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 dotenv.config();
 
 const connectDB = async () => {
-  // if (mongoose.connections[0].readyState) return;
+  if (mongoose.connections[0].readyState) return;
   try {
     mongoose.connect(process.env.MongoURL, {
       useUnifiedTopology: true,

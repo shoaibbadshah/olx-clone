@@ -1,16 +1,20 @@
+// Import necessary dependencies
+import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import ProductModel from "@/lib/schema/schema";
-import { NextResponse } from "next/server";
 
+// Function to fetch products
 export const GET = async () => {
   try {
     await connectDB();
-    const product = await ProductModel.find();
-    console.log("Products fetched successfully", product);
+
+    const products = await ProductModel.find();
+
+    console.log("Products fetched successfully", products);
 
     return NextResponse.json({
       status: 200,
-      product,
+      products,
     });
   } catch (error) {
     console.error("Error retrieving products:", error);
@@ -21,39 +25,24 @@ export const GET = async () => {
   }
 };
 
-export const POST = async (request: Request) => {
-  const body = await request.json();
-  console.log("🚀 ~ file: route.ts:26 ~ POST ~ body:", body);
-  const {
-    title,
-    description,
-    price,
-    discountPercentage,
-    brand,
-    category,
-    thumbnail,
-    images,
-  } = body;
+// Function to insert a new product
+// export const POST = async (request) => {
+//   const body = await request.json();
+//   console.log("🚀 ~ POST ~ body:", body);
 
-  try {
-    await connectDB();
-    const newProduct = new ProductModel({
-      title,
-      description,
-      price,
-      discountPercentage,
-      brand,
-      category,
-      thumbnail,
-      images,
-    });
+//   try {
+//     await connectDB();
+//     const newProduct = new ProductModel(body);
+//     await newProduct.save();
 
-    await newProduct.save();
-    return NextResponse.json({
-      success: true,
-      message: "Product uploaded successfully",
-    });
-  } catch (error) {
-    return NextResponse.json({ error: "Error uploading product" + error });
-  }
-};
+//     return NextResponse.json({
+//       success: true,
+//       message: "Product uploaded successfully",
+//     });
+//   } catch (error) {
+//     console.error("Error uploading product:", error);
+//     return NextResponse.json({
+//       error: "Error uploading product" + error,
+//     });
+//   }
+// };

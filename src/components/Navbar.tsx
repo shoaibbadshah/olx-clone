@@ -9,6 +9,7 @@ import SearchBox from "./SearchBox";
 import CategoryDropdown from "./CategoryDropdown";
 import { useUser } from "@clerk/nextjs";
 import { User } from "@clerk/nextjs/server";
+import { clsx } from "clsx";
 import {
   ClerkProvider,
   SignIn,
@@ -104,14 +105,15 @@ const Navbar = () => {
               </div>
             </nav>
 
-            <nav className="container flex items-center  mx-auto py-4">
-              <div className="location w-1/4">
+            <nav className="container mx-auto py-4 flex  items-center justify-between">
+              <div className="location w-full md:w-1/4 mb-4 md:mb-0">
                 <LocationDropdown />
               </div>
-              <div className="search w-2/4">
+              <div className="search w-full md:w-2/4 mb-4 md:mb-0">
                 <SearchBox />
               </div>
-              <div className="user-info flex  flex-1/4 ml-4 items-center justify-between">
+
+              <div className="user-info flex w-full gap-1  md:w-1/4 md:ml-4 items-center justify-evenly">
                 <div className="username flex flex-col items-center justify-center font-bold">
                   {user.primaryEmailAddress && (
                     <Image
@@ -120,14 +122,20 @@ const Navbar = () => {
                       className="profile-photo"
                     />
                   )}
-
-                  <span className="user-name">{user.fullName}</span>
+                  <span className="user-name whitespace-nowrap">
+                    {user.fullName}
+                  </span>
                 </div>
-                <button className="bg-transparent ml-4 hover:bg-blue-500 text-blue-700 font-semibold hover:text-white  px-4 py-0 border border-blue-500 hover:border-transparent rounded-2xl">
+                <button className="bg-transparent ml-2 text-blue-700 font-semibold hover:animate-all scale-110 ease-in-out px-4 py-0 whitespace-nowrap transition border-b border-transparent hover:border-b-blue-600">
                   <SignOutButton />
+                </button>
+
+                <button className="bg-transparent ml-2 font-semibold hover:animate-all scale-110 ease-in-out px-4 py-0 whitespace-nowrap">
+                  Sell Now!
                 </button>
               </div>
             </nav>
+
             <nav>
               <div className="nav flex  align-center flex-row justify-start">
                 <div className="cat_dropdown ">

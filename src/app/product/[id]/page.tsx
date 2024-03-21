@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { ObjectId } from "mongodb";
 
 type Product = {
   id: number;
@@ -30,22 +31,26 @@ const Page = () => {
     try {
       setLoading(true);
 
-      // Simulating a 2000 millisecond (2-second) delay before fetching data
-      setTimeout(async () => {
-        const response = await fetch(`http://localhost:8080/products/${id}`);
+      // Make sure to replace 'your-database-name' with your actual database name
+      const response = await fetch(`/api/product/${id}`);
 
-        if (!response.ok) {
+      if (!response.ok) {
+        // Handle 404 Not Found error
+        if (response.status === 404) {
           throw new Error("Product not found");
         }
+        // Handle other HTTP errors
+        throw new Error("Failed to fetch product: " + response.statusText);
+      }
 
-        const data: Product = await response.json();
+      const data = await response.json();
 
+      // Simulating a 2000 millisecond (2-second) delay before updating state
+      setTimeout(() => {
         setProduct(data);
-
         if (data && data.images.length > 0) {
           setSelectedImage(data.images[0]);
         }
-
         setLoading(false);
       }, 2000); // Simulated delay of 2000 milliseconds
     } catch (error) {
@@ -265,7 +270,10 @@ const Page = () => {
                   </div>
                   <div className="flex-wrap hidden -mx-2 md:flex">
                     {product.images.map((image, index) => (
-                      <div className="w-1/2 p-2 sm:w-1/4" key={index}>
+                      <div
+                        className="w-1/2 p-2 sm:w-1/4"
+                        key={index}
+                      >
                         <a
                           className="block border border-gray-200 hover:border-blue-400 dark:border-gray-700 dark:hover:border-blue-300"
                           href="#"

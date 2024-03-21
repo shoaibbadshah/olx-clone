@@ -2,6 +2,9 @@ const { withForms } = require("@tailwindcss/forms");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ["cdn.dummyjson.com", "i.dummyjson.com"], // Define the hostname here
+  },
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -19,7 +22,7 @@ const nextConfig = {
     return config;
   },
 
-  withPlugins: [withForms],
+  ...withForms,
 };
 
 module.exports = nextConfig;

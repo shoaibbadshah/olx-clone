@@ -34,29 +34,57 @@ const CartPage = () => {
   //   }
   // };
 
-  const increaseQuantity = (productId: number) => {
-    const cartItem = cartItems.find((item) => item.id === productId);
+  import { useState } from "react";
+  import { ObjectId } from "mongodb";
 
-    if (cartItem && quantities[productId] < cartItem.stock) {
-      setQuantities((prevQuantities) => ({
-        ...prevQuantities,
-        [productId]: (prevQuantities[productId] || 0) + 1,
-      }));
+  const increaseQuantity = async (productId: number) => {
+    try {
+      const response = await fetch(`/api/product/${productId}`);
+
+      if (!response.ok) {
+        throw new Error("Product not found");
+      }
+
+      const product = await response.json();
+
+      if (
+        cartItems.find((item) => item.id === productId) &&
+        quantities[productId] < product.stock
+      ) {
+        setQuantities((prevQuantities) => ({
+          ...prevQuantities,
+          [productId]: (prevQuantities[productId] || 0) + 1,
+        }));
+      }
+    } catch (error) {
+      console.error("Error increasing quantity:", error);
     }
   };
 
-  const decreaseQuantity = (productId: number) => {
-    if (quantities[productId] > 1) {
-      setQuantities((prevQuantities) => ({
-        ...prevQuantities,
-        [productId]: (prevQuantities[productId] || 0) - 1,
-      }));
+  const decreaseQuantity = async (productId: number) => {
+    try {
+      const response = await fetch(`/api/product/${productId}`);
+
+      if (!response.ok) {
+        throw new Error("Product not found");
+      }
+
+      const product = await response.json();
+
+      if (quantities[productId] > 1) {
+        setQuantities((prevQuantities) => ({
+          ...prevQuantities,
+          [productId]: (prevQuantities[productId] || 0) - 1,
+        }));
+      }
+    } catch (error) {
+      console.error("Error decreasing quantity:", error);
     }
   };
 
   const removeFromCart = async (productId: number) => {
     try {
-      const response = await fetch(`http://localhost:8080/cart/${productId}`, {
+      const response = await fetch(`/api/cart/${productId}`, {
         method: "DELETE",
       });
 
@@ -77,7 +105,7 @@ const CartPage = () => {
       try {
         // Simulate a delay for demonstration purposes (2 seconds)
         setTimeout(async () => {
-          const response = await fetch("http://localhost:8080/cart");
+          const response = await fetch("/api/cart/");
           if (!response.ok) {
             throw new Error("Failed to fetch cart items");
           }

@@ -1,51 +1,7 @@
+// @ts-ignore
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-// const Data = [
-//   {
-//     id: 1,
-//     title: "iPhone 9",
-//     description: "An apple mobile which is nothing like apple",
-//     price: 993,
-
-//     brand: "Apple",
-//     category: "smartphones",
-//     thumbnail: "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
-//   },
-//   {
-//     id: 2,
-//     title: "iPhone X",
-//     description:
-//       "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
-//     price: 1111,
-
-//     brand: "Apple",
-//     category: "smartphones",
-//     thumbnail: "https://i.dummyjson.com/data/products/2/thumbnail.jpg",
-//   },
-//   {
-//     id: 3,
-//     title: "Samsung Universe 9",
-//     description:
-//       "Samsung's new variant which goes beyond Galaxy to the Universe",
-//     price: 1249,
-
-//     brand: "Samsung",
-//     category: "smartphones",
-//     thumbnail: "https://i.dummyjson.com/data/products/3/thumbnail.jpg",
-//   },
-//   {
-//     id: 4,
-//     title: "OPPOF19",
-//     description: "OPPO F19 is officially announced on April 2021.",
-//     price: 300,
-
-//     brand: "OPPO",
-//     category: "smartphones",
-//     thumbnail: "https://i.dummyjson.com/data/products/4/thumbnail.jpg",
-//   },
-// ];
 
 const Testimonial = () => {
   const [data, setData] = useState();
@@ -77,7 +33,10 @@ const Testimonial = () => {
                   alt=""
                 />
                 <div className="absolute flex flex-col top-4 right-4">
-                  <a href="#" className="flex items-center">
+                  <a
+                    href="#"
+                    className="flex items-center"
+                  >
                     <div className="relative flex items-center justify-center p-3 mb-3 transition-all translate-x-20 bg-white rounded dark:bg-gray-700 dark:text-white group-hover:translate-x-0 wishlist hover:bg-blue-200 dark:hover:bg-blue-600 group">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +50,10 @@ const Testimonial = () => {
                       </svg>
                     </div>
                   </a>
-                  <a href="#" className="flex items-center">
+                  <a
+                    href="#"
+                    className="flex items-center"
+                  >
                     <div className="relative flex items-center justify-center p-3 mb-3 transition-all translate-x-20 bg-white rounded dark:bg-gray-700 dark:text-white group-hover:translate-x-0 wishlist hover:bg-blue-200 dark:hover:bg-blue-600 group">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +69,10 @@ const Testimonial = () => {
                   </a>
                 </div>
               </div>
-              <a href="#" className="flex justify-between mx-3">
+              <a
+                href="#"
+                className="flex justify-between mx-3"
+              >
                 <h2 className="mb-2 text-xl font-bold text-black dark:text-white">
                   {item.title.substring(0, 15)}
                 </h2>

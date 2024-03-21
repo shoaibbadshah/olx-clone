@@ -12,143 +12,15 @@ import {
   BsListNested,
 } from "react-icons/bs";
 import Link from "next/link";
-
-type Product = {
-  id: string;
-  thumbnail: string;
-  title: string;
-  price: number;
-  brand: string;
-  category: string;
-  description: string;
-};
-
-const filters = [
-  {
-    id: "Brand",
-    name: "Brand",
-    options: [
-      {
-        value: "Apple",
-        label: "Apple",
-        checked: false,
-      },
-      {
-        value: "Samsung",
-        label: "Samsung",
-        checked: false,
-      },
-      {
-        value: "OPPO",
-        label: "OPPO",
-        checked: false,
-      },
-      {
-        value: "Huawei",
-        label: "Huawei",
-        checked: false,
-      },
-
-      {
-        value: "Infinix",
-        label: "Infinix",
-        checked: false,
-      },
-
-      {
-        value: "Watch Pearls",
-        label: "Watch Pearls",
-        checked: false,
-      },
-      {
-        value: "Bracelet",
-        label: "Bracelet",
-        checked: false,
-      },
-      {
-        value: "Car Aux",
-        label: "Car Aux",
-        checked: false,
-      },
-      {
-        value: "LED Lights",
-        label: "LED Lights",
-        checked: false,
-      },
-
-      {
-        value: "Golden",
-        label: "Golden",
-        checked: false,
-      },
-    ],
-  },
-  {
-    id: "category",
-    name: "Category",
-    options: [
-      {
-        value: "smartphones",
-        label: "smartphones",
-        checked: false,
-      },
-      {
-        value: "laptops",
-        label: "laptops",
-        checked: false,
-      },
-      {
-        value: "fragrances",
-        label: "fragrances",
-        checked: false,
-      },
-      {
-        value: "skincare",
-        label: "skincare",
-        checked: false,
-      },
-      {
-        value: "groceries",
-        label: "groceries",
-        checked: false,
-      },
-      {
-        value: "home-decoration",
-        label: "home decoration",
-        checked: false,
-      },
-      {
-        value: "furniture",
-        label: "furniture",
-        checked: false,
-      },
-      {
-        value: "tops",
-        label: "tops",
-        checked: false,
-      },
-
-      {
-        value: "lighting",
-        label: "lighting",
-        checked: false,
-      },
-    ],
-  },
-];
-const sortOptions = [
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
-];
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import { filters, sortOptions, classNames } from "../../../Page";
+import Image from "next/image";
+import { ProductInterface } from "@/lib/schema/schema";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductInterface[]>(
+    []
+  );
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -158,26 +30,22 @@ const Product = () => {
   const [isLoading, setIsLoading] = useState(true);
   const productsPerPage = 6;
 
+  // Fetch products from API on initial render
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Simulating delay of 2 seconds before fetching products
-        setTimeout(async () => {
-          const response = await fetch("http://localhost:8080/products");
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          const data = await response.json();
-          if (Array.isArray(data)) {
-            setProducts(data);
-            setIsLoading(false); // Update isLoading after fetching products
-          } else {
-            console.error(
-              "Fetched data does not contain products array:",
-              data
-            );
-          }
-        }, 2000);
+        const response = await fetch("/api/product");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        if (Array.isArray(data.products)) {
+          // Check if 'product' array exists
+          setProducts(data.products); // Update state with 'product' array
+          setIsLoading(false); // Update isLoading after fetching products
+        } else {
+          console.error("Fetched data does not contain products array:", data);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -312,106 +180,107 @@ const Product = () => {
                 </div>
 
                 <form className="mt-4 border-t border-gray-200">
-                  {filters.map((filter) => (
-                    <Disclosure
-                      as="div"
-                      key={filter.id}
-                      className="border-t border-gray-200 py-6"
-                    >
-                      {({ open }) => (
-                        <>
-                          <h3 className="-mx-2 -my-3 flow-root">
-                            <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                              <span className="font-medium text-gray-900">
-                                {filter.name}
-                              </span>
-                              <span className="ml-6 flex items-center">
-                                {open ? (
-                                  <BsDash
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                ) : (
-                                  <BsPlus
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                )}
-                              </span>
-                            </Disclosure.Button>
-                          </h3>
-                          {filter.id === "Brand" && (
-                            <Disclosure.Panel className="pt-6">
-                              <div
-                                className="space-y-6"
-                                key={filter.id}
-                              >
-                                {filter.options.map((option) => (
-                                  <div
-                                    key={option.value}
-                                    className="flex items-center"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedBrand === option.value}
-                                      onChange={() =>
-                                        handleFilter(filter.id, option.value)
-                                      }
-                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  {filters &&
+                    filters.map((filter) => (
+                      <Disclosure
+                        as="div"
+                        key={filter.id}
+                        className="border-t border-gray-200 py-6"
+                      >
+                        {({ open }) => (
+                          <>
+                            <h3 className="-mx-2 -my-3 flow-root">
+                              <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                                <span className="font-medium text-gray-900">
+                                  {filter.name}
+                                </span>
+                                <span className="ml-6 flex items-center">
+                                  {open ? (
+                                    <BsDash
+                                      className="h-5 w-5"
+                                      aria-hidden="true"
                                     />
-                                    <label
-                                      className={`ml-2 ${
-                                        selectedBrand === option.value
-                                          ? "text-blue-500 font-semibold"
-                                          : ""
-                                      }`}
-                                    >
-                                      {option.label}
-                                    </label>
-                                  </div>
-                                ))}
-                              </div>
-                            </Disclosure.Panel>
-                          )}
-                          {filter.id === "category" && (
-                            <Disclosure.Panel className="pt-6">
-                              <div
-                                className="space-y-6"
-                                key={filter.id}
-                              >
-                                {filter.options.map((option) => (
-                                  <div
-                                    key={option.value}
-                                    className="flex items-center"
-                                  >
-                                    <input
-                                      type="checkbox"
-                                      checked={
-                                        selectedCategory === option.value
-                                      }
-                                      onChange={() =>
-                                        handleFilter(filter.id, option.value)
-                                      }
-                                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                  ) : (
+                                    <BsPlus
+                                      className="h-5 w-5"
+                                      aria-hidden="true"
                                     />
-                                    <label
-                                      className={`ml-2 ${
-                                        selectedCategory === option.value
-                                          ? "text-blue-500 font-semibold"
-                                          : ""
-                                      }`}
+                                  )}
+                                </span>
+                              </Disclosure.Button>
+                            </h3>
+                            {filter.id === "Brand" && (
+                              <Disclosure.Panel className="pt-6">
+                                <div
+                                  className="space-y-6"
+                                  key={filter.id}
+                                >
+                                  {filter.options.map((option) => (
+                                    <div
+                                      key={option.value}
+                                      className="flex items-center"
                                     >
-                                      {option.label}
-                                    </label>
-                                  </div>
-                                ))}
-                              </div>
-                            </Disclosure.Panel>
-                          )}
-                        </>
-                      )}
-                    </Disclosure>
-                  ))}
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedBrand === option.value}
+                                        onChange={() =>
+                                          handleFilter(filter.id, option.value)
+                                        }
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                      />
+                                      <label
+                                        className={`ml-2 ${
+                                          selectedBrand === option.value
+                                            ? "text-blue-500 font-semibold"
+                                            : ""
+                                        }`}
+                                      >
+                                        {option.label}
+                                      </label>
+                                    </div>
+                                  ))}
+                                </div>
+                              </Disclosure.Panel>
+                            )}
+                            {filter.id === "category" && (
+                              <Disclosure.Panel className="pt-6">
+                                <div
+                                  className="space-y-6"
+                                  key={filter.id}
+                                >
+                                  {filter.options.map((option) => (
+                                    <div
+                                      key={option.value}
+                                      className="flex items-center"
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        checked={
+                                          selectedCategory === option.value
+                                        }
+                                        onChange={() =>
+                                          handleFilter(filter.id, option.value)
+                                        }
+                                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                      />
+                                      <label
+                                        className={`ml-2 ${
+                                          selectedCategory === option.value
+                                            ? "text-blue-500 font-semibold"
+                                            : ""
+                                        }`}
+                                      >
+                                        {option.label}
+                                      </label>
+                                    </div>
+                                  ))}
+                                </div>
+                              </Disclosure.Panel>
+                            )}
+                          </>
+                        )}
+                      </Disclosure>
+                    ))}
                 </form>
               </Dialog.Panel>
             </Transition.Child>
@@ -450,27 +319,34 @@ const Product = () => {
                 leaveTo="transform opacity-0 scale-95"
               >
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-1">
-                    {sortOptions.map((option) => (
-                      <Menu.Item key={option.name}>
-                        {({ active }) => (
-                          <a
-                            href={option.href}
-                            className={classNames(
-                              option.current
-                                ? "font-medium text-gray-900"
-                                : "text-gray-500",
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm"
-                            )}
-                            onClick={() => handleSort(option.name)} // Handle sorting onClick
-                          >
-                            {option.name}
-                          </a>
-                        )}
-                      </Menu.Item>
-                    ))}
-                  </div>
+                  {sortOptions && (
+                    <div className="py-1">
+                      {/* Iterate over each sorting option */}
+                      {sortOptions.map((option) => (
+                        <Menu.Item key={option.name}>
+                          {({ active }) => (
+                            // Render a link or anchor element
+                            <a
+                              href={option.href}
+                              // Apply different styles based on whether the option is currently active
+                              className={classNames(
+                                option.current
+                                  ? "font-medium text-gray-900"
+                                  : "text-gray-500",
+                                active ? "bg-gray-100" : "",
+                                "block px-4 py-2 text-sm"
+                              )}
+                              // Handle click on the sorting option
+                              onClick={() => handleSort(option.name)}
+                            >
+                              {/* Display the name of the sorting option */}
+                              {option.name}
+                            </a>
+                          )}
+                        </Menu.Item>
+                      ))}
+                    </div>
+                  )}
                 </Menu.Items>
               </Transition>
             </Menu>
@@ -538,7 +414,7 @@ const Product = () => {
                 onSubmit={handleSubmit}
               >
                 <label
-                  for="default-search"
+                  htmlFor="default-search"
                   className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
                 >
                   Search
@@ -578,112 +454,115 @@ const Product = () => {
                   </button>
                 </div>
               </form>
-              {filters.map((filter) => (
-                <Disclosure
-                  as="div"
-                  key={filter.id}
-                  className="border-t border-gray-200 py-6"
-                >
-                  {({ open }) => (
-                    <>
-                      <h3 className="-mx-2 -my-3 flow-root">
-                        <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
-                          <span className="font-medium text-gray-900">
-                            {filter.name}
-                          </span>
-                          <span className="ml-6 flex items-center">
-                            {open ? (
-                              <BsDash
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <BsPlus
-                                className="h-5 w-5"
-                                aria-hidden="true"
-                              />
-                            )}
-                          </span>
-                        </Disclosure.Button>
-                      </h3>
-                      {filter.id === "Brand" && (
-                        <Disclosure.Panel className="pt-6">
-                          <div
-                            className="space-y-6"
-                            key={filter.id}
-                          >
-                            {filter.options.map((option) => (
-                              <div
-                                key={option.value}
-                                className="flex items-center"
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={selectedBrand === option.value}
-                                  onChange={() =>
-                                    handleFilter(filter.id, option.value)
-                                  }
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+              {filters &&
+                filters.map((filter) => (
+                  <Disclosure
+                    as="div"
+                    key={filter.id}
+                    className="border-t border-gray-200 py-6"
+                  >
+                    {({ open }) => (
+                      <>
+                        <h3 className="-mx-2 -my-3 flow-root">
+                          <Disclosure.Button className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500">
+                            <span className="font-medium text-gray-900">
+                              {filter.name}
+                            </span>
+                            <span className="ml-6 flex items-center">
+                              {open ? (
+                                <BsDash
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
                                 />
-                                <label
-                                  className={`ml-2 ${
-                                    selectedBrand === option.value
-                                      ? "text-blue-500 font-semibold"
-                                      : ""
-                                  }`}
-                                >
-                                  {option.label}
-                                </label>
-                              </div>
-                            ))}
-                          </div>
-                        </Disclosure.Panel>
-                      )}
-                      {filter.id === "category" && (
-                        <Disclosure.Panel className="pt-6">
-                          <div
-                            className="space-y-6"
-                            key={filter.id}
-                          >
-                            {filter.options.map((option) => (
-                              <div
-                                key={option.value}
-                                className="flex items-center"
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={selectedCategory === option.value}
-                                  onChange={() =>
-                                    handleFilter(filter.id, option.value)
-                                  }
-                                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                              ) : (
+                                <BsPlus
+                                  className="h-5 w-5"
+                                  aria-hidden="true"
                                 />
-                                <label
-                                  className={`ml-2 ${
-                                    selectedCategory === option.value
-                                      ? "text-blue-500 font-semibold"
-                                      : ""
-                                  }`}
+                              )}
+                            </span>
+                          </Disclosure.Button>
+                        </h3>
+                        {filter.id === "Brand" && (
+                          <Disclosure.Panel className="pt-6">
+                            <div
+                              className="space-y-6"
+                              key={filter.id}
+                            >
+                              {filter.options.map((option) => (
+                                <div
+                                  key={option.value}
+                                  className="flex items-center"
                                 >
-                                  {option.label}
-                                </label>
-                              </div>
-                            ))}
-                          </div>
-                        </Disclosure.Panel>
-                      )}
-                    </>
-                  )}
-                </Disclosure>
-              ))}
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedBrand === option.value}
+                                    onChange={() =>
+                                      handleFilter(filter.id, option.value)
+                                    }
+                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                  />
+                                  <label
+                                    className={`ml-2 ${
+                                      selectedBrand === option.value
+                                        ? "text-blue-500 font-semibold"
+                                        : ""
+                                    }`}
+                                  >
+                                    {option.label}
+                                  </label>
+                                </div>
+                              ))}
+                            </div>
+                          </Disclosure.Panel>
+                        )}
+                        {filter.id === "category" && (
+                          <Disclosure.Panel className="pt-6">
+                            <div
+                              className="space-y-6"
+                              key={filter.id}
+                            >
+                              {filter.options.map((option) => (
+                                <div
+                                  key={option.value}
+                                  className="flex items-center"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedCategory === option.value}
+                                    onChange={() =>
+                                      handleFilter(filter.id, option.value)
+                                    }
+                                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                  />
+                                  <label
+                                    className={`ml-2 ${
+                                      selectedCategory === option.value
+                                        ? "text-blue-500 font-semibold"
+                                        : ""
+                                    }`}
+                                  >
+                                    {option.label}
+                                  </label>
+                                </div>
+                              ))}
+                            </div>
+                          </Disclosure.Panel>
+                        )}
+                      </>
+                    )}
+                  </Disclosure>
+                ))}
             </form>
 
             <div className="lg:col-span-3">
               {isLoading ? (
                 <div className="flex my-10 justify-center h-screen">
                   <div className="flex gap-4 flex-wrap justify-center">
-                    <img
+                    <Image
                       className="w-20 h-20 animate-spin"
+                      width={100}
+                      height={80}
                       src="https://www.svgrepo.com/show/474682/loading.svg"
                       alt="Loading icon"
                     />
@@ -699,75 +578,86 @@ const Product = () => {
                     }
                   >
                     {/* Show Products */}
-                    {filteredProducts
+                    {filteredProducts // Render the filtered products
                       .slice(
-                        (currentPage - 1) * productsPerPage,
-                        currentPage * productsPerPage
+                        // Use slice to paginate the products
+                        (currentPage - 1) * productsPerPage, // Calculate the starting index for pagination
+                        currentPage * productsPerPage // Calculate the ending index for pagination
                       )
-                      .map((product) => (
-                        <Link
-                          href={`/product/${product.id}`}
-                          key={product.id}
-                        >
-                          <div
-                            className={
-                              isListView
-                                ? "border rounded-lg mb-4"
-                                : "group border-2 pb-4 rounded-xl"
-                            }
+                      .map(
+                        (
+                          product // Map through the paginated products and render each one
+                        ) => (
+                          <Link
+                            href={`/product/${product.id}`}
+                            key={product.id}
                           >
-                            {isListView && (
-                              <Fragment>
-                                <div className="flex">
-                                  <img
-                                    src={product.thumbnail}
-                                    alt=""
-                                    className="w-96 h-60"
-                                  />
-                                  <div className="w-full px-6 mb-10 mt-10 lg:w-1/2 lg:mb-0">
-                                    <div className="pl-4 mb-6 border-l-4 border-blue-500">
-                                      <h1 className="mt-2 text-xl font-black text-gray-700 md:text-2xl dark:text-gray-300">
-                                        {product.title}
-                                      </h1>
+                            <div
+                              className={
+                                isListView // Determine the class based on the view mode
+                                  ? "border rounded-lg mb-4" // Class for list view
+                                  : "group border-2 pb-4 rounded-xl" // Class for grid view
+                              }
+                            >
+                              {isListView && ( // Render content for list view
+                                <Fragment>
+                                  <div className="flex">
+                                    <Image
+                                      src={product.thumbnail}
+                                      alt=""
+                                      className="w-96 h-60"
+                                    />
+                                    <div className="w-full px-6 mb-10 mt-10 lg:w-1/2 lg:mb-0">
+                                      <div className="pl-4 mb-6 border-l-4 border-blue-500">
+                                        <h1 className="mt-2 text-xl font-black text-gray-700 md:text-2xl dark:text-gray-300">
+                                          {product.title}
+                                        </h1>
+                                      </div>
+                                      <p className="mb-6 text-2xl font-bold leading-7 text-blue-700 dark:text-gray-400">
+                                        {product.brand}
+                                      </p>
+                                      <p className="mb-6 text-base leading-7 text-gray-500 dark:text-gray-400">
+                                        {product.description}
+                                      </p>
+                                      <p className="mb-6 text-base font-medium text-gray-900">
+                                        Price: ${product.price}
+                                      </p>
                                     </div>
-                                    <p className="mb-6 text-2xl font-bold leading-7 text-blue-700 dark:text-gray-400">
-                                      {product.brand}
+                                  </div>
+                                </Fragment>
+                              )}
+                              {!isListView && ( // Render content for grid view
+                                <Fragment>
+                                  <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
+                                    <Image
+                                      width={100}
+                                      height={48}
+                                      src={product.thumbnail}
+                                      alt=""
+                                      className="w-full h-48 object-cover object-center group-hover:opacity-75"
+                                    />
+                                  </div>
+                                  <div className="flex mx-2 flex-wrap justify-between">
+                                    <h3 className="mt-4 text-lg font-bold text-blue-700">
+                                      {product.title.substring(0, 18)}{" "}
+                                      {/* Display title with max length */}
+                                    </h3>
+                                    <p className="mt-4 text-base font-medium text-gray-900">
+                                      Price: ${product.price}{" "}
+                                      {/* Display price */}
                                     </p>
-                                    <p className="mb-6 text-base leading-7 text-gray-500 dark:text-gray-400">
-                                      {product.description}
-                                    </p>
-                                    <p className="mb-6 text-base font-medium text-gray-900">
-                                      Price: ${product.price}
+                                    <p className="mt-2 text-base leading-6 text-gray-500">
+                                      {product.description.substring(0, 42)}{" "}
+                                      {/* Display description with max length */}
                                     </p>
                                   </div>
-                                </div>
-                              </Fragment>
-                            )}
-                            {!isListView && (
-                              <Fragment>
-                                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7">
-                                  <img
-                                    src={product.thumbnail}
-                                    alt=""
-                                    className="w-full h-48 object-cover object-center group-hover:opacity-75"
-                                  />
-                                </div>
-                                <div className="flex mx-2 flex-wrap justify-between">
-                                  <h3 className="mt-4 text-lg font-bold text-blue-700">
-                                    {product.title.substring(0, 18)}
-                                  </h3>
-                                  <p className="mt-4 text-base font-medium text-gray-900">
-                                    Price: ${product.price}
-                                  </p>
-                                  <p className="mt-2 text-base leading-6 text-gray-500">
-                                    {product.description.substring(0, 42)}
-                                  </p>
-                                </div>
-                              </Fragment>
-                            )}
-                          </div>
-                        </Link>
-                      ))}
+                                </Fragment>
+                              )}
+                            </div>
+                          </Link>
+                        )
+                      )}
+
                     {/* End of Show Products */}
                   </div>
                 </div>
@@ -865,5 +755,4 @@ const Product = () => {
     </>
   );
 };
-
 export default Product;
